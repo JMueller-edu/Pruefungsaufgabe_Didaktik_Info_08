@@ -99,11 +99,11 @@
     [
       #align(center)[
       #deckz.hand("7H", "3H", "9H", "2H", "6H", format: "mini", angle: 16deg, width: 3.5cm)
-      #text(size: 8.8pt)[https://gist.github.com/JMueller-edu/578f6deba3f7c91e9b83b23a49734637#file-selection-sort-stationskarte-typ]
+      #text(size: 8.8pt)[https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git]
     ]],
     [
       #align(right)[
-        #qrcode("https://gist.github.com/JMueller-edu/578f6deba3f7c91e9b83b23a49734637#file-selection-sort-stationskarte-typ",height: 65pt, background-fill: white)
+        #qrcode("https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git",height: 65pt, background-fill: white)
       ]],
   )
 ]
