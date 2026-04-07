@@ -1,23 +1,35 @@
 /*--------------------------------------------*
- * Copyright (C) 2026 Jan Müller              *
- * SPDX-License-Identifier: GPL-3.0-or-later  *
- *--------------------------------------------*/
+* Copyright (C) 2026 Jan Müller              *
+* SPDX-License-Identifier: GPL-3.0-or-later  *
+*--------------------------------------------*/
 
-// Externe Pakete für Kartenlayout und einfache Ablaufdiagramme.
+/*--------------------------------------------------------------------*
+* Importiert nur die Pakete, die diese Stationskarte konkret benutzt. *
+* `deckz` zeichnet Karten, `fletcher` das Aktionsdiagramm, `ccicons`  *
+* die Lizenz und `qrcode` den Link zum GitHub-Repository.             *
+*--------------------------------------------------------------------*/
 #import "@preview/deckz:0.3.1"
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
-#import fletcher.shapes: diamond, pill
+#import fletcher.shapes: pill
 #import "@preview/ccicons:1.0.1": *
-#import "@preview/zebra:0.1.0": datamatrix, qrcode
+#import "@preview/zebra:0.1.0": qrcode
 
-// Dokumentmetadaten für Titelzeile und Fußbereich.
+/*---------------------------------------------------------------*
+* Hinterlegt die Metadaten, die in Kopf- und Fußzeile auftauchen. *
+* So bleiben Titel, Autor:innenangabe und Beschreibung zentral    *
+* gepflegt und müssen nicht mehrfach im Dokument wiederholt werden. *
+*---------------------------------------------------------------*/
 #set document(
   title: [Stationskarte Selection Sort:],
   author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
-// Drucklayout für eine quer gedrehte A4-Stationskarte.
+/*----------------------------------------------------------------*
+* Definiert das Grundlayout der quer gesetzten A4-Seite.          *
+* Kopf- und Fußbereich werden hier einmal global festgelegt,      *
+* damit alle Seiten der Stationskarte automatisch gleich aussehen. *
+*----------------------------------------------------------------*/
 #set page(
   paper: "a4",
   flipped: true,
@@ -36,20 +48,32 @@
   ],
 )
 
-// Grundtypografie: gut lesbar, linksbündig, mit kompaktem Zeilenabstand.
+/*--------------------------------------------------------------*
+* Vereinheitlicht Sprache, Schriftgröße und Zeilenabstand.      *
+* Die Werte sind bewusst kompakt gewählt, damit die Karte       *
+* didaktisch dicht bleibt und trotzdem gut lesbar gesetzt wird. *
+*--------------------------------------------------------------*/
 #set text(lang: "de", size: 12pt)
 #set par(justify: false, leading: 0.82em)
 
-// Farbpalette für wiederkehrende Boxen und Hervorhebungen.
+/*---------------------------------------------------------------*
+* Bündelt alle wiederkehrenden Farben an einer zentralen Stelle. *
+* Dadurch lassen sich spätere Layoutanpassungen schnell machen,  *
+* ohne jede Box oder Hervorhebung einzeln anfassen zu müssen.    *
+*---------------------------------------------------------------*/
 #let blue = rgb("#2E5E8A")
 #let light-blue = rgb("#EEF6FC")
 #let green = rgb("#EAF7EC")
 #let yellow = rgb("#FFF6D8")
 #let red = rgb("#FFF0EF")
 #let gray = rgb("#F6F7F8")
-#let dark = rgb("#253746")
+#let repo-url = "https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git"
 
-// Standardbox für inhaltliche Abschnitte wie Erklärungen, Hinweise und Aufgaben.
+/*-------------------------------------------------------------*
+* Standardbaustein für inhaltliche Kästen wie Erklärung,        *
+* Arbeitsauftrag oder Hinweis. Titelstil, Rand und Hintergrund  *
+* sind hier gebündelt, damit alle Infoboxen konsistent bleiben. *
+*-------------------------------------------------------------*/
 #let infobox(title, body, fill: light-blue) = block(
   inset: 9pt,
   radius: 8pt,
@@ -62,7 +86,11 @@
   #body
 ]
 
-// Kleine Infokacheln für organisatorische Angaben wie Material, Zeit und Ziel.
+/*---------------------------------------------------------------*
+* Kleine Infokachel für organisatorische Angaben.                *
+* Diese kompakte Variante wird nur im Kopfbereich genutzt, damit *
+* Material, Zeit und Ziel schnell erfasst werden können.         *
+*---------------------------------------------------------------*/
 #let chip(title, body) = block(
   inset: 8pt,
   radius: 8pt,
@@ -75,8 +103,12 @@
   #body
 ]
 
-// Kopfbereich mit Titel und dekorativer Kartenhand.
-// Kopfbereich der Stationskarte mit Titel und dekorativer Kartenhand.
+/*-----------------------------------------------------------------*
+* Baut den sichtbaren Kopf der Stationskarte.                      *
+* Neben Titel und Klassenbezug enthält er eine Kartenhand sowie    *
+* einen QR-Code, damit das Material analog und digital verknüpft   *
+* bleibt.                                                          *
+*-----------------------------------------------------------------*/
 #let headline-box() = block(
   inset: 12pt,
   radius: 10pt,
@@ -99,21 +131,42 @@
     [
       #align(center)[
       #deckz.hand("7H", "3H", "9H", "2H", "6H", format: "mini", angle: 16deg, width: 3.5cm)
-      #text(size: 8.8pt)[https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git]
+      #text(size: 8.8pt)[#repo-url]
     ]],
     [
       #align(right)[
-        #qrcode("https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git",height: 65pt, background-fill: white)
+        #qrcode(repo-url, height: 65pt, background-fill: white)
       ]],
   )
 ]
 
-// Hilfsfunktion, um eine Kartenreihe einheitlich zu setzen.
+/*--------------------------------------------------------------*
+* Rendert eine einfache Kartenreihe mit einheitlichem Abstand. *
+* Diese Funktion wird überall dort benutzt, wo ein kompletter   *
+* Kartenstand ohne zusätzliche Hervorhebung gezeigt werden soll. *
+*--------------------------------------------------------------*/
 #let card-row(..cards) = align(center)[
   #deckz.line(..cards, format: "small", spacing: 8pt)
 ]
 
-// Kompakte Zustandsanzeige für bereits sortierten Teil und verbleibenden Rest.
+/*-----------------------------------------------------------------*
+* Rendert eine kleine Kartenfolge für die Mini-Zustandsanzeige.    *
+* Ist die Folge leer, wird stattdessen der jeweils übergebene      *
+* Platzhalter ausgegeben, also Kartenrückseite oder Leerhinweis.   *
+*-----------------------------------------------------------------*/
+#let mini-sequence(cards, empty) = {
+  if cards.len() == 0 {
+    empty
+  } else {
+    deckz.line(..cards, format: "mini", spacing: 4pt)
+  }
+}
+
+/*----------------------------------------------------------------*
+* Zeichnet die kompakte Zustandsanzeige für einen Selection-Schritt. *
+* Links steht, was bereits sicher einsortiert ist, rechts der noch  *
+* zu betrachtende Rest.                                             *
+*----------------------------------------------------------------*/
 #let state-mini(sorted, rest) = block(
   inset: 6pt,
   radius: 7pt,
@@ -127,63 +180,21 @@
     row-gutter: 4pt,
     [#text(size: 8.5pt, weight: "bold", fill: blue)[Fertig:]],
     [
-      #if sorted.len() == 0 {
-        deckz.back(format: "mini")
-      } else {
-        deckz.line(..sorted, format: "mini", spacing: 4pt)
-      }
+      #mini-sequence(sorted, deckz.back(format: "mini"))
     ],
 
     [#text(size: 8.5pt, weight: "bold", fill: blue)[Rest:]],
     [
-      #if rest.len() == 0 {
-        emph[keine Karten mehr]
-      } else {
-        deckz.line(..rest, format: "mini", spacing: 4pt)
-      }
+      #mini-sequence(rest, emph[keine Karten mehr])
     ],
   )
 ]
 
-// Reserve: vereinfachter Ablauf einer Selection-Sort-Runde als Diagramm.
-#let round-diagram() = align(center)[
-  #diagram(
-    spacing: (8mm, 6mm),
-    node-stroke: 0.8pt + blue,
-    edge-stroke: 0.8pt + blue,
-    node-fill: white,
-    mark-scale: 85%,
-
-    node((0, 0), [Rest anschauen], shape: pill, fill: light-blue, name: <a>),
-    node((1, 0), [kleinste Karte finden], shape: pill, fill: light-blue, name: <b>),
-    node((0, 1), [nach vorne holen], shape: pill, fill: green, name: <c>),
-    node((1, 1), [links ist eine Karte mehr fertig], shape: pill, fill: yellow, name: <d>),
-
-    edge(<a>, <b>, "->"),
-    edge(<b>, <c>, "->"),
-    edge(<c>, <d>, "->"),
-  )
-]
-
-// Reserve: Vergleichsdiagramm für die Entscheidung "Tausch nötig oder nicht?".
-#let compare-diagram() = align(center)[
-  #diagram(
-    spacing: (10mm, 6mm),
-    node-stroke: 0.8pt + blue,
-    edge-stroke: 0.8pt + blue,
-    node-fill: white,
-    mark-scale: 85%,
-
-    node((0, 0), [kleinste Karte \ im Rest], shape: diamond, fill: yellow, name: <a>),
-    node((1, 1), [Tausch], shape: pill, fill: green, name: <b>),
-    node((-1, 1), [kein Tausch], shape: pill, fill: light-blue, name: <c>),
-
-    edge(<a>, <b>, [nein], "-|>", corner: right),
-    edge(<a>, <c>, [ja], "-|>", corner: left),
-  )
-]
-
-// Kleines Aktionsdiagramm innerhalb eines Beispielschritts.
+/*----------------------------------------------------------------*
+* Visualisiert die Aktion eines Beispielschritts als Mini-Diagramm. *
+* So wird neben dem Text sofort sichtbar, ob die kleinste Karte     *
+* nach vorne geholt wird oder bereits vorne liegt.                  *
+*----------------------------------------------------------------*/
 #let action-diagram(label, fill: green) = align(center)[
   #diagram(
     spacing: (8mm, 5mm),
@@ -198,8 +209,11 @@
   )
 ]
 
-// Baut ein vollständiges Schrittfeld für das durchgerechnete Beispiel:
-// Zustand vorher, gefundene kleinste Karte, Erklärung und Zustand nachher.
+/*----------------------------------------------------------------*
+* Baut einen kompletten Beispielschritt für das Lehrbeispiel.      *
+* Ein Schritt enthält den Zustand vor dem Suchen, die gefundene    *
+* kleinste Karte, die sprachliche Erklärung und den neuen Zustand. *
+*----------------------------------------------------------------*/
 #let step-panel(number, sorted-before, rest-before, found, text-line, sorted-after, rest-after, swap: true) = {
   let action-label = if swap { [nach vorne] } else { [schon vorne] }
   let action-fill = if swap { green } else { yellow }
@@ -223,7 +237,11 @@
   )
 }
 
-// Einstieg mit Titel und organisatorischem Überblick.
+/*---------------------------------------------------------------*
+* Startet die erste Seite mit Kopfbereich und organisatorischem  *
+* Überblick. Damit ist sofort klar, welches Material gebraucht   *
+* wird und welches Lernziel die Station verfolgt.                *
+*---------------------------------------------------------------*/
 #headline-box()
 
 #grid(
@@ -234,7 +252,11 @@
   chip([Ziel], [Du kannst Selection Sort erklären und selbst anwenden.]),
 )
 
-// Erste Erklärung: Grundidee des Verfahrens plus anschauliches Bild.
+/*----------------------------------------------------------------*
+* Führt knapp in die Grundidee von Selection Sort ein.            *
+* Text und Bild stehen nebeneinander, damit die verbale Erklärung *
+* sofort an eine konkrete Darstellung gekoppelt wird.             *
+*----------------------------------------------------------------*/
 #infobox([Worum geht es?], [
   #grid(
     columns: (1fr, 1fr),
@@ -254,7 +276,11 @@
     ],
   )])
 
-// Arbeitsroutine und typische Stolperstelle nebeneinander.
+/*----------------------------------------------------------------*
+* Stellt Arbeitsroutine und typische Fehlvorstellungen direkt      *
+* gegenüber. So sehen Lernende auf einen Blick, was sie tun sollen *
+* und was Selection Sort gerade nicht bedeutet.                    *
+*----------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 12pt,
@@ -283,7 +309,11 @@
 
 #v(8pt)
 
-// Seite 2: Beginn des durchgerechneten Beispiels.
+/*--------------------------------------------------------------*
+* Seite 2 beginnt mit einem vollständig vorbereiteten Beispiel. *
+* Von hier aus wird Schritt für Schritt sichtbar, wie immer die *
+* kleinste Karte des Restes nach vorne geholt wird.             *
+*--------------------------------------------------------------*/
 #pagebreak()
 
 #infobox(
@@ -324,7 +354,11 @@
   ),
 )
 
-// Seite 3: Fortsetzung des Beispiels bis zum sortierten Ergebnis.
+/*--------------------------------------------------------------*
+* Auf der nächsten Seite wird das Beispiel vollständig beendet. *
+* Die letzten beiden Schritte zeigen sowohl einen echten Tausch *
+* als auch den Fall, dass kein Tausch mehr nötig ist.           *
+*--------------------------------------------------------------*/
 #pagebreak()
 
 #grid(
@@ -363,7 +397,11 @@
   fill: green,
 )
 
-// Seite 4: Eigenständige Schülerarbeit mit Kartenmaterial.
+/*--------------------------------------------------------------*
+* Seite 4 öffnet die eigenständige Arbeitsphase.                *
+* Ab hier übertragen die Lernenden das beobachtete Verfahren    *
+* auf ein neues Kartenset.                                      *
+*--------------------------------------------------------------*/
 #pagebreak()
 
 #infobox(
@@ -376,7 +414,11 @@
 )
 
 
-// Arbeitsauftrag und Denkhilfe als begleitende Struktur für die Bearbeitung.
+/*----------------------------------------------------------------*
+* Kombiniert konkreten Arbeitsauftrag und sprachliche Denkhilfe. *
+* So wird nicht nur das Tun angeleitet, sondern auch die passende *
+* innere Sprechweise für den Algorithmus aufgebaut.               *
+*----------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 10pt,
@@ -405,7 +447,11 @@
   ],
 )
 
-// Dokumentationstabelle für die einzelnen Sortierschritte plus Selbstkontrolle.
+/*---------------------------------------------------------------*
+* Die Tabelle macht die einzelnen Sortierschritte sichtbar.      *
+* Direkt daneben steht eine Selbstkontrolle, damit Lernende ihr  *
+* Endergebnis eigenständig überprüfen können.                    *
+*---------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 10pt,
@@ -436,7 +482,11 @@
   ],
 )
 
-// Abschließende Transferfrage zur inhaltlichen Sicherung.
+/*----------------------------------------------------------------*
+* Die Abschlussfrage sichert die zentrale Denkbewegung von        *
+* Selection Sort sprachlich ab. So wird noch einmal bewusst,      *
+* dass hier nicht die nächste, sondern die kleinste Karte zählt. *
+*----------------------------------------------------------------*/
 #infobox(
   [Zusatzfrage],
   [

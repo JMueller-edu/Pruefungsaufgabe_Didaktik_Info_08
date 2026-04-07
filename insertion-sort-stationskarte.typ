@@ -1,22 +1,33 @@
 /*--------------------------------------------*
- * Copyright (C) 2026 Jan Müller              *
- * SPDX-License-Identifier: GPL-3.0-or-later  *
- *--------------------------------------------*/
+* Copyright (C) 2026 Jan Müller              *
+* SPDX-License-Identifier: GPL-3.0-or-later  *
+*--------------------------------------------*/
 
-
-// Kartenpaket für die Darstellung von Spielkarten in den Beispielen.
+/*--------------------------------------------------------------------*
+* Importiert nur die Pakete, die diese Stationskarte konkret benutzt. *
+* `deckz` zeichnet Karten, `ccicons` die Lizenz und `qrcode` den      *
+* schnellen Link zum GitHub-Repository im Kopfbereich.                *
+*--------------------------------------------------------------------*/
 #import "@preview/deckz:0.3.1"
 #import "@preview/ccicons:1.0.1": *
-#import "@preview/zebra:0.1.0": datamatrix, qrcode
+#import "@preview/zebra:0.1.0": qrcode
 
-// Dokumentmetadaten für Kopf- und Fußbereich.
+/*---------------------------------------------------------------*
+* Hinterlegt die Metadaten, die in Kopf- und Fußzeile auftauchen. *
+* So bleiben Titel, Autor:innenangabe und Beschreibung zentral    *
+* gepflegt und müssen nicht mehrfach im Dokument wiederholt werden. *
+*---------------------------------------------------------------*/
 #set document(
   title: [Stationskarte Insertion Sort:],
   author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
-// Grundlayout der quer gesetzten A4-Seite.
+/*----------------------------------------------------------------*
+* Definiert das Grundlayout der quer gesetzten A4-Seite.          *
+* Kopf- und Fußbereich werden hier einmal global festgelegt,      *
+* damit alle Seiten der Stationskarte automatisch gleich aussehen. *
+*----------------------------------------------------------------*/
 #set page(
   paper: "a4",
   flipped: true,
@@ -35,19 +46,32 @@
   ],
 )
 
-// Einheitliche Grundtypografie für das Material.
+/*--------------------------------------------------------------*
+* Vereinheitlicht Sprache, Schriftgröße und Zeilenabstand.      *
+* Die Werte sind bewusst kompakt gewählt, damit die Karte       *
+* didaktisch dicht bleibt und trotzdem gut lesbar gesetzt wird. *
+*--------------------------------------------------------------*/
 #set text(lang: "de", size: 12pt)
 #set par(justify: false, leading: 0.82em)
 
-// Farbpalette für wiederkehrende Boxen und Hervorhebungen.
+/*---------------------------------------------------------------*
+* Bündelt alle wiederkehrenden Farben an einer zentralen Stelle. *
+* Dadurch lassen sich spätere Layoutanpassungen schnell machen,  *
+* ohne jede Box oder Hervorhebung einzeln anfassen zu müssen.    *
+*---------------------------------------------------------------*/
 #let blue = rgb("#2E5E8A")
 #let light-blue = rgb("#EEF6FC")
 #let green = rgb("#EAF7EC")
 #let yellow = rgb("#FFF6D8")
 #let red = rgb("#FFF0EF")
 #let gray = rgb("#F6F7F8")
+#let repo-url = "https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git"
 
-// Standardbox für Erklärungen, Aufgaben und Hinweise.
+/*-------------------------------------------------------------*
+* Standardbaustein für inhaltliche Kästen wie Erklärung,        *
+* Arbeitsauftrag oder Hinweis. Titelstil, Rand und Hintergrund  *
+* sind hier gebündelt, damit alle Infoboxen konsistent bleiben. *
+*-------------------------------------------------------------*/
 #let infobox(title, body, fill: light-blue) = block(
   inset: 9pt,
   radius: 8pt,
@@ -60,7 +84,11 @@
   #body
 ]
 
-// Kleine Infokachel für Material, Zeit und Ziel.
+/*---------------------------------------------------------------*
+* Kleine Infokachel für organisatorische Angaben.                *
+* Diese kompakte Variante wird nur im Kopfbereich genutzt, damit *
+* Material, Zeit und Ziel schnell erfasst werden können.         *
+*---------------------------------------------------------------*/
 #let chip(title, body) = block(
   inset: 8pt,
   radius: 8pt,
@@ -73,7 +101,12 @@
   #body
 ]
 
-// Kopfbereich der Stationskarte mit Titel und dekorativer Kartenhand.
+/*-----------------------------------------------------------------*
+* Baut den sichtbaren Kopf der Stationskarte.                      *
+* Neben Titel und Klassenbezug enthält er eine Kartenhand sowie    *
+* einen QR-Code, damit das Material analog und digital verknüpft   *
+* bleibt.                                                          *
+*-----------------------------------------------------------------*/
 #let headline-box() = block(
   inset: 12pt,
   radius: 10pt,
@@ -96,26 +129,37 @@
     [
       #align(center)[
       #deckz.hand("7H", "3H", "9H", "2H", "6H", format: "mini", angle: 16deg, width: 3.5cm)
-      #text(size: 8.8pt)[https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git]
+      #text(size: 8.8pt)[#repo-url]
     ]],
     [
       #align(right)[
-        #qrcode("https://github.com/JMueller-edu/Pruefungsaufgabe_Didaktik_Info_08.git",height: 80pt, background-fill: white)
+        #qrcode(repo-url, height: 80pt, background-fill: white)
       ]],
   )
 ]
 
-// Hilfsfunktion für eine gleichmäßig gesetzte Kartenreihe.
+/*--------------------------------------------------------------*
+* Rendert eine einfache Kartenreihe mit einheitlichem Abstand. *
+* Diese Funktion wird überall dort benutzt, wo ein kompletter   *
+* Kartenstand ohne zusätzliche Hervorhebung gezeigt werden soll. *
+*--------------------------------------------------------------*/
 #let card-row(..cards) = align(center)[
   #deckz.line(..cards, format: "small", spacing: 8pt)
 ]
 
-// Abstand zwischen Karten in den Schrittansichten.
+/*---------------------------------------------------------------*
+* Zentraler Abstand für Karten in den Schrittansichten.          *
+* Eine eigene Konstante macht kleine Layoutkorrekturen leichter, *
+* ohne dass mehrere `stack`-Aufrufe angepasst werden müssen.     *
+*---------------------------------------------------------------*/
 #let card-step-spacing = 4pt
 
-// Einzelne Karte in der Schrittansicht.
-// Die aktuelle Karte wird leicht verschoben und mit etwas "noise"
-// optisch hervorgehoben, damit sie direkt ins Auge fällt.
+/*-----------------------------------------------------------------*
+* Rendert genau eine Karte innerhalb einer Schrittansicht.         *
+* Die aktuell betrachtete Karte wird leicht angehoben und mit      *
+* etwas visuellem Rauschen markiert, damit Lernende sofort sehen,  *
+* welche Karte gerade eingefügt wird.                              *
+*-----------------------------------------------------------------*/
 #let sequence-card(card, current: false) = {
   if current {
     move(
@@ -127,102 +171,92 @@
   }
 }
 
-// Baut eine einfache Kartenfolge ohne besondere Hervorhebung,
-// z. B. für den Zustand am Ende eines Schritts.
-#let plain-sequence(sorted, current: none, rest: ()) = {
-  let current_part = if current == none { () } else { (current,) }
-  let all-cards = (
-    sorted
-    + current_part
-    + rest
-  )
-
-  if all-cards.len() == 0 {
-    emph[keine Karten]
-  } else {
-    align(center)[
-      #stack(
-        dir: ltr,
-        spacing: card-step-spacing,
-        ..all-cards.map(card => sequence-card(card)),
-      )
-    ]
-  }
-}
-
-// Baut die Kartenfolge für den Zustand vor dem Einfügen:
-// sortierter Teil links, aktuelle Karte, restliche Karten rechts.
-#let segmented-sequence(sorted, current: none, rest: ()) = {
-  let sorted-slots = sorted.map(card => sequence-card(card))
+/*-------------------------------------------------------------------*
+* Baut eine komplette Kartenfolge für einen Zwischenschritt auf.     *
+* `sorted` steht links für den bereits sortierten Teil, `current`    *
+* optional für die neue Karte und `rest` für den verbleibenden Rest. *
+* Mit `highlight-current` wird nur die aktuelle Karte hervorgehoben. *
+*--------------------------------------------------------------------*/
+#let sequence(sorted, current: none, rest: (), highlight-current: false) = {
   let current-slot = if current == none {
     ()
   } else {
-    (sequence-card(current, current: true),)
+    (sequence-card(current, current: highlight-current),)
   }
-  let rest-slots = rest.map(card => sequence-card(card))
-  let all-slots = sorted-slots + current-slot + rest-slots
+  let slots = sorted.map(card => sequence-card(card)) + current-slot + rest.map(card => sequence-card(card))
 
-  if all-slots.len() == 0 {
+  if slots.len() == 0 {
     emph[keine Karten]
   } else {
     align(center)[
       #stack(
         dir: ltr,
         spacing: card-step-spacing,
-        ..all-slots,
+        ..slots,
       )
     ]
   }
 }
 
-// Kompakte Zustandsanzeige vor dem eigentlichen Einfügeschritt.
-#let state-before(sorted, current: none, rest: (), target-note: none) = block(
+/*------------------------------------------------------------------*
+* Zeichnet eine kompakte Zustandsbox für Vorher- oder Nachherbild.  *
+* Titel, Kartenfolge und optionale Zusatznotiz werden hier          *
+* gekapselt, damit beide Zustände mit derselben Logik gesetzt sind. *
+*-------------------------------------------------------------------*/
+#let state-box(title, sorted, current: none, rest: (), highlight-current: false, note: none) = block(
   inset: 6pt,
   radius: 7pt,
   stroke: 0.75pt + rgb("#D0D7DE"),
   fill: white,
   width: 100%,
 )[
-  #text(size: 8.5pt, weight: "bold", fill: blue)[Die neue Karte ist leicht hervorgehoben]
-  #segmented-sequence(sorted, current: current, rest: rest)
-  #if target-note != none [
+  #text(size: 8.5pt, weight: "bold", fill: blue)[#title]
+  #sequence(sorted, current: current, rest: rest, highlight-current: highlight-current)
+  #if note != none [
     #align(left)[
-      #text(size: 8.5pt, weight: "bold", fill: blue)[#target-note]
+      #text(size: 8.5pt, weight: "bold", fill: blue)[#note]
     ]
   ]
 ]
 
-// Kompakte Zustandsanzeige nach dem Schritt.
-#let state-after(sorted, current: none, rest: ()) = block(
-  inset: 6pt,
-  radius: 7pt,
-  stroke: 0.75pt + rgb("#D0D7DE"),
-  fill: white,
-  width: 100%,
-)[
-  #text(size: 8.5pt, weight: "bold", fill: blue)[Reihenfolge danach]
-  #plain-sequence(sorted, current: current, rest: rest)
-]
-
-// Vollständige Box für einen Beispielschritt:
-// Zustand vorher, Erklärung, Zielposition und Zustand nachher.
-#let insertion-panel(number, sorted-before, current, rest-before, found, target-note, text-line, sorted-after, next-current: none, next-rest: ()) = {
+/*----------------------------------------------------------------*
+* Baut einen kompletten Beispielschritt für das Lehrbeispiel.     *
+* Ein Schritt enthält den Zustand vor dem Einfügen, die sprachliche *
+* Erklärung und den Zustand nach dem Einfügen in genau einer Box. *
+*----------------------------------------------------------------*/
+#let insertion-panel(number, sorted-before, current, rest-before, target-note, text-line, sorted-after, next-current: none, next-rest: ()) = {
   infobox(
     [Schritt #number],
     [
-      #state-before(sorted-before, current: current, rest: rest-before, target-note: target-note)
+      #state-box(
+        [Die neue Karte ist leicht hervorgehoben],
+        sorted-before,
+        current: current,
+        rest: rest-before,
+        highlight-current: true,
+        note: target-note,
+      )
       #v(4pt)
-      #text(size: 9pt, weight: "bold", fill: blue)[Neue Karte: #deckz.inline(found)]
+      #text(size: 9pt, weight: "bold", fill: blue)[Neue Karte: #deckz.inline(current)]
       #v(2pt)
       #text(size: 12pt)[#text-line]
       #v(4pt)
-      #state-after(sorted-after, current: next-current, rest: next-rest)
+      #state-box(
+        [Reihenfolge danach],
+        sorted-after,
+        current: next-current,
+        rest: next-rest,
+      )
     ],
     fill: gray,
   )
 }
 
-// Einstieg mit Titel und organisatorischen Rahmendaten.
+/*---------------------------------------------------------------*
+* Startet die erste Seite mit Kopfbereich und organisatorischem  *
+* Überblick. Damit ist sofort klar, welches Material gebraucht   *
+* wird und welches Lernziel die Station verfolgt.                *
+*---------------------------------------------------------------*/
 #headline-box()
 
 #grid(
@@ -233,7 +267,11 @@
   chip([Ziel], [Du kannst Insertion Sort erklären und selbst anwenden.]),
 )
 
-// Einführung in die Grundidee des Verfahrens.
+/*----------------------------------------------------------------*
+* Führt knapp in die Grundidee von Insertion Sort ein.            *
+* Text und Bild stehen nebeneinander, damit die verbale Erklärung *
+* sofort an eine konkrete Darstellung gekoppelt wird.             *
+*----------------------------------------------------------------*/
 #infobox([Worum geht es?], [
   #grid(
     columns: (1fr, 1fr),
@@ -255,7 +293,11 @@
   )
 ])
 
-// Arbeitsroutine und typische Missverständnisse nebeneinander.
+/*----------------------------------------------------------------*
+* Stellt Arbeitsroutine und typische Fehlvorstellungen direkt      *
+* gegenüber. So sehen Lernende auf einen Blick, was sie tun sollen *
+* und was Insertion Sort gerade nicht bedeutet.                    *
+*----------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 12pt,
@@ -283,7 +325,11 @@
   ],
 )
 
-// Seite 2: Start des durchgerechneten Beispiels.
+/*---------------------------------------------------------------*
+* Seite 2 beginnt mit einem vollständig vorbereiteten Beispiel.  *
+* Die erste Karte gilt schon als sortiert und dient als Startpunkt *
+* für die folgenden Einfügeschritte.                             *
+*---------------------------------------------------------------*/
 #pagebreak()
 
 #infobox(
@@ -298,7 +344,11 @@
   fill: light-blue,
 )
 
-// Die ersten beiden Einfügeschritte des Beispiels.
+/*--------------------------------------------------------------*
+* Zeigt die ersten beiden Einfügeschritte des Beispiels.        *
+* Hier wird besonders deutlich, dass die nächste Karte entweder *
+* eingefügt oder einfach rechts stehen bleiben kann.            *
+*--------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 10pt,
@@ -309,7 +359,6 @@
     ("7H",),
     "3H",
     ("9H", "2H", "6H"),
-    "3H",
     [↓ vor #deckz.inline("7H")],
     [Die neue Karte ist die *3*. \ Sie ist kleiner als die *7* und kommt vor die *7*.],
     ("3H", "7H"),
@@ -322,7 +371,6 @@
     ("3H", "7H"),
     "9H",
     ("2H", "6H"),
-    "9H",
     [↓ hinter #deckz.inline("7H")],
     [Die neue Karte ist die *9*. \ Sie ist größer als die *7* und bleibt ganz rechts.],
     ("3H", "7H", "9H"),
@@ -331,7 +379,11 @@
   ),
 )
 
-// Seite 3: Abschluss des Beispiels.
+/*--------------------------------------------------------------*
+* Auf der nächsten Seite wird das Beispiel vollständig beendet. *
+* Die letzten beiden Schritte zeigen das Einfügen ganz vorne    *
+* und das Einfügen zwischen zwei bereits sortierte Karten.      *
+*--------------------------------------------------------------*/
 #pagebreak()
 
 #grid(
@@ -344,7 +396,6 @@
     ("3H", "7H", "9H"),
     "2H",
     ("6H",),
-    "2H",
     [↓ vor #deckz.inline("3H")],
     [Die neue Karte ist die *2*. \ Sie ist kleiner als *9*, *7* und *3* und kommt ganz nach vorne.],
     ("2H", "3H", "7H", "9H"),
@@ -357,7 +408,6 @@
     ("2H", "3H", "7H", "9H"),
     "6H",
     (),
-    "6H",
     [↓ zwischen #deckz.inline("3H") und #deckz.inline("7H")],
     [Die neue Karte ist die *6*. \ Sie passt zwischen *3* und *7*.],
     ("2H", "3H", "6H", "7H", "9H"),
@@ -366,7 +416,11 @@
   ),
 )
 
-// Zusammenfassung des vollständig sortierten Beispiels.
+/*---------------------------------------------------------------*
+* Fasst das Ergebnis des Beispiels noch einmal sprachlich zusammen. *
+* Die Schlussbox sichert den Kern von Insertion Sort vor dem        *
+* Übergang in die eigenständige Arbeitsphase.                       *
+*---------------------------------------------------------------*/
 #infobox(
   [Ergebnis des Beispiels],
   [
@@ -378,7 +432,11 @@
   fill: green,
 )
 
-// Seite 4: eigenständige Schülerarbeit.
+/*--------------------------------------------------------------*
+* Seite 4 öffnet die eigenständige Arbeitsphase.                *
+* Ab hier übertragen die Lernenden das beobachtete Verfahren    *
+* auf ein neues Kartenset.                                      *
+*--------------------------------------------------------------*/
 #pagebreak()
 
 #infobox(
@@ -390,7 +448,11 @@
   fill: light-blue,
 )
 
-// Arbeitsauftrag und Denkhilfe für die eigene Durchführung.
+/*----------------------------------------------------------------*
+* Kombiniert konkreten Arbeitsauftrag und sprachliche Denkhilfe. *
+* So wird nicht nur das Tun angeleitet, sondern auch die passende *
+* innere Sprechweise für den Algorithmus aufgebaut.               *
+*----------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 10pt,
@@ -418,7 +480,11 @@
   ],
 )
 
-// Dokumentationstabelle plus Selbstkontrolle für die Lernenden.
+/*---------------------------------------------------------------*
+* Die Tabelle macht die einzelnen Sortierschritte sichtbar.      *
+* Direkt daneben steht eine Selbstkontrolle, damit Lernende ihr  *
+* Endergebnis eigenständig überprüfen können.                    *
+*---------------------------------------------------------------*/
 #grid(
   columns: (1fr, 1fr),
   gutter: 10pt,
@@ -450,7 +516,11 @@
   ],
 )
 
-// Abschlussfrage zur sprachlichen Sicherung des Algorithmusverständnisses.
+/*----------------------------------------------------------------*
+* Die Abschlussfrage zwingt zur sprachlichen Abgrenzung zwischen *
+* Selection Sort und Insertion Sort. Genau diese Verbalisierung  *
+* stabilisiert meist das eigentliche Algorithmusverständnis.     *
+*----------------------------------------------------------------*/
 #infobox(
   [Zusatzfrage],
   [
