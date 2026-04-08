@@ -271,7 +271,7 @@
       Selection Sort = *kleinste Karte suchen und nach vorne tauschen.*
     ],
     [#figure(
-        image("image-2.png"),
+        image("assets/selction-sort.png"),
       )
     ],
   )])

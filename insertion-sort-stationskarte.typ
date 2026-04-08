@@ -288,7 +288,7 @@
       Insertion Sort = *nächste Karte nehmen und passend einfügen.*
     ],
     [
-     #image("image-16.png")
+     #image("assets\insertion-sort.png")
     ],
   )
 ])
