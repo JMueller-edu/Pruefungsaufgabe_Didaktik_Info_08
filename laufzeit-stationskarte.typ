@@ -13,7 +13,7 @@
 
 #set document(
   title: [Stationskarte Laufzeit:],
-  author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
+  author: "A. Firle - I. Rhöse - J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
@@ -207,7 +207,7 @@
   columns: (1.2fr, 0.8fr, 4fr),
   gutter: 8pt,
   chip([Du brauchst], [Tabellenkalkulation, Stift]),
-  chip([Zeit], [ca. 25 Minuten]),
+  chip([Zeit], [ca. 35 Minuten]),
   chip([Ziel], [Du erkennst, dass Laufzeit quadratisch wachsen kann, und stellst einen Bezug zu Bubble Sort her.]),
 )
 

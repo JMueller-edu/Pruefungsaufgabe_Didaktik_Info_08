@@ -21,7 +21,7 @@
 *---------------------------------------------------------------*/
 #set document(
   title: [Stationskarte Selection Sort:],
-  author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
+  author: "A. Firle - I. Rhöse - J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
@@ -468,6 +468,7 @@
       [3], [], [], [],
       [4], [], [], [],
       [5], [], [], [],
+      [6], [], [], [],
     )],
   [
     #infobox(
@@ -492,9 +493,7 @@
   [
     Erkläre in *einem Satz*:
     *Was ist der Unterschied zwischen „die nächste Karte anschauen“ und „die kleinste Karte im Rest suchen“?*
-    #v(10pt)
-    #line(length: 100%)
-    #v(10pt)
+    #v(8pt)
     #line(length: 100%)
   ],
   fill: light-blue,

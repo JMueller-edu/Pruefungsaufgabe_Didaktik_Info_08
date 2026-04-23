@@ -20,7 +20,7 @@
  *---------------------------------------------------------------*/
 #set document(
   title: [Stationskarte Merge Sort:],
-  author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
+  author: "A. Firle - I. Rhöse - J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
@@ -122,7 +122,7 @@
     [
       #text(size: 16.5pt, weight: "bold")[Stationskarte]
       #linebreak()
-      #text(size: 14pt, weight: "bold")[Rekrusives Sortieren nach Merge Sort entdecken]
+      #text(size: 14pt, weight: "bold")[Rekursives Sortieren nach Merge Sort entdecken]
       #v(3pt)
       #text(size: 8.8pt)[Informatik · Klasse 10]
       \
@@ -380,8 +380,8 @@
           align: left + horizon,
           [*Schritt*], [*Linker Stapel*], [*Rechter Stapel*], [*Ergebnis*],
           [Merge 1], [7], [3], [-> 3, 7],
-          [Merge 2], [5], [1], [-> 1, 5],
-          [Merge 3], [3, 7], [1, 5], [-> 1, 3, 5, 7],
+          [Merge 2], [5], [2], [-> 2, 5],
+          [Merge 3], [3, 7], [2, 5], [-> 2, 3, 5, 7],
         )
       ],
       fill: gray,
@@ -498,7 +498,7 @@
     #set text(size: 14pt)
     #table(
       columns: (auto, 1fr, 1fr, 1fr),
-      inset: 10pt,
+      inset: 8pt,
       stroke: 0.7pt + black,
       align: left + horizon,
       [*Schritt*], [*Linker Stapel*], [*Rechter Stapel*], [*Zusammengeführt*],
@@ -522,7 +522,9 @@
       [Zusatzfragen Vergleich],
       [
         Nenne je einen Vorteil von Merge Sort gegenüber Selection Sort - und einen Nachteil.
-        #v(10pt)
+        #v(8pt)
+        #line(length: 100%)
+        #v(8pt)
         #line(length: 100%)
       ],
       fill: yellow,
@@ -538,12 +540,13 @@
     )
   ],
 )
-
 #infobox(
   [Zusatzfrage Rekursion],
   [
     Erkläre in einem Satz, was ein "Basisfall" ist und warum er wichtig ist.
-    #v(10pt)
+    #v(8pt)
+    #line(length: 100%)
+    #v(8pt)
     #line(length: 100%)
   ],
   fill: yellow,

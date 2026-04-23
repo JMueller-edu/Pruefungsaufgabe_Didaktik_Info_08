@@ -19,7 +19,7 @@
 *---------------------------------------------------------------*/
 #set document(
   title: [Stationskarte Insertion Sort:],
-  author: "Herr A. Firle - Herr I. Röhse - Herr J. Müller -",
+  author: "A. Firle - I. Rhöse - J. Müller -",
   description: [Weiterbildungskurs Informatik 08 - Baustein 05 Didaktik - #cc-by-nc-sa],
 )
 
@@ -501,6 +501,7 @@
       [3], [], [], [],
       [4], [], [], [],
       [5], [], [], [],
+      [6], [], [], [],
     )
   ],
   [
@@ -526,8 +527,6 @@
   [
     Erkläre in *einem Satz*:
     *Was ist der Unterschied zwischen „die kleinste Karte im Rest suchen“ und „die nächste Karte passend einfügen“?*
-    #v(10pt)
-    #line(length: 100%)
     #v(10pt)
     #line(length: 100%)
   ],
